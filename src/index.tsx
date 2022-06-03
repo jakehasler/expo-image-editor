@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, StatusBar, Platform } from "react-native";
+import { StyleSheet, View, StatusBar, Platform, SafeAreaView } from "react-native";
 import { ControlBar } from "./ControlBar";
 import { EditingWindow } from "./EditingWindow";
 import * as ImageManipulator from "expo-image-manipulator";
@@ -150,14 +150,14 @@ function ImageEditorCore(props: ImageEditorProps) {
         onEditingComplete: props.onEditingComplete,
       }}
     >
-      <StatusBar hidden={props.visible} />
+      {props.visible && <StatusBar barStyle='light-content' />}
       {props.asView ? (
         <ImageEditorView {...props} />
       ) : (
         <UniversalModal
           visible={props.visible}
           presentationStyle="fullScreen"
-          statusBarTranslucent
+          animationType="slide"
         >
           <ImageEditorView {...props} />
         </UniversalModal>
@@ -176,11 +176,11 @@ export function ImageEditorView(props: ImageEditorProps) {
   return (
     <>
       {ready ? (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <ControlBar />
           <EditingWindow />
           {mode === "full" && <OperationBar />}
-        </View>
+        </SafeAreaView>
       ) : null}
       {processing ? <Processing /> : null}
     </>
@@ -200,6 +200,6 @@ export function ImageEditor(props: ImageEditorProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#222",
+    backgroundColor: "#333",
   },
 });
